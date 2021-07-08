@@ -12,7 +12,7 @@
     (main/info "Generating fresh 'lein new' synergy-event-handler project.")
     (->files data
              ["README.md" (render "README.md" data)]
-             [".gitignore" (render ".gitignore" data)]
+             [".gitignore" (render "gitignore" data)]
              ["src/{{sanitized}}/core.clj" (render "core.clj" data)]
              ["resources/deployFunction.sh" (render "deployFunction.sh" data)]
              ["resources/updateFunction.sh" (render "updateFunction.sh" data)]

@@ -1,8 +1,8 @@
 #!/bin/bash
 aws lambda create-function \
     --region eu-west-1 \
-    --function-name synergy-{{name}} \
-    --zip-file fileb://$(pwd)/../target/synergy-{{name}}.jar \
+    --function-name synergy-handler-{{name}} \
+    --zip-file fileb://$(pwd)/../target/synergy-handler-{{name}}.jar \
     --role arn:aws:iam::979590819078:role/syn-evt-lambda \
     --handler {{name}}.core.Route \
     --runtime java11 \
