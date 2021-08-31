@@ -1,6 +1,6 @@
 (ns {{name}}.core
 (:require [uswitch.lambada.core :refer [deflambdafn]]
-  [clojure.data.json :as json]
+  [cheshire.core :as json]
   [clojure.java.io :as io]
   [cognitect.aws.client.api :as aws]
   [synergy-specs.events :as synspec]
@@ -37,8 +37,9 @@
 ;; the success and fail queues above depending on whether the version/types match or not. Update logic here according to
 ;; need
 
-(defn process-event [event]
+(defn process-event
   "Process an inbound event - usually emit a success/failure message at the end"
+  [event]
   (if (empty? @snsArnPrefix)
     (stdlib/set-up-topic-table snsArnPrefix eventStoreTopic ssm))
   (let [validateEvent (stdlib/validate-message event)]
@@ -53,7 +54,9 @@
 ;; namespaced event
 (defn handle-event
   [event]
-  (let [cevent (json/read-str (get (get (first (get event :Records)) :Sns) :Message) :key-fn keyword)
+  (let [deduced-type (stdlib/check-event-type event)
+        event-content (stdlib/get-event-data event deduced-type)
+        cevent (json/parse-string event-content true)
         nsevent (synergy-specs.events/wrap-std-event cevent)]
     (info "Received the raw event : " (print-str event))
     (info "Converted event " (print-str cevent))
@@ -64,7 +67,7 @@
 (deflambdafn {{name}}.core.Route
              [in out ctx]
              "Takes a JSON event in standard Synergy Event form from the Message field, convert to map and send to routing function"
-             (let [event (json/read (io/reader in) :key-fn keyword)
+             (let [event (json/parse-stream (io/reader in) true)
                    res (handle-event event)]
                (with-open [w (io/writer out)]
-                 (json/write res w))))
+                 (json/generate-stream res w {:pretty true}))))
