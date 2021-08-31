@@ -4,10 +4,15 @@ A Leiningen template for Synergy Event Handlers.
 
 ## Usage
 
-lein new synergy-event-handler <project name>
+lein new synergy-event-handler <project-name>
 
 Generates a new project for the synergy-event-handler style. Update the core.clj namespace
-with applicatoion specific logic
+with application specific logic. Creates an uberjar called:
+
+synergy-handler-<project-name>.jar
+
+Scripts deployFunction.sh and updateFunction.sh can be used
+to deploy/update Lambda on AWS
 
 ## License
 

@@ -17,4 +17,4 @@
                  [synergy-events-stdlib "0.1.8"]]
   :repl-options {:init-ns {{name}}.core}
   :profiles {:uberjar {:aot :all}}
-  :uberjar-name "synergy-{{name}}.jar")
+  :uberjar-name "synergy-handler-{{name}}.jar")
