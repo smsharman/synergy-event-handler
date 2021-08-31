@@ -1,4 +1,4 @@
-(defproject {{name}} "0.1.0"
+(defproject {{name}} "0.1.1"
   :description "Synergy Event Handler for XX"
   :url "http://synergyxm.ai/event-handler"
   :license {:name "Hackthorn Innovation Ltd"
